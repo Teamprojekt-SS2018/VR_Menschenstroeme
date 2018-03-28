@@ -262,7 +262,7 @@ MonoBehaviour:
   - {fileID: 19}
   - {fileID: 14}
   m_Selected: 0
-  m_LastSelected: 2
+  m_LastSelected: 1
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -390,19 +390,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Standard Assets/Environment/TerrainAssets/SurfaceTextures
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Standard Assets/Environment/TerrainAssets/SurfaceTextures
+  - Assets
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\Teamprojekt\VR_Menschenstroeme\VRMaenschenstroeme
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 275}
-    m_SelectedIDs: 8c3d0000
-    m_LastClickedID: 15756
-    m_ExpandedIDs: 000000007e3600006038000058390000d03b00008c3d0000404200002c440000b8440000c64400001245000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 79}
+    m_SelectedIDs: ca2b0000
+    m_LastClickedID: 11210
+    m_ExpandedIDs: 00000000ca2b0000d42b00006c2c0000642d00006c2d0000402e0000aa300000cc300000e8300000f230000010330000123300001433000016330000183300001a3300001c33000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -430,7 +430,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000007e3600006038000058390000d03b00008c3d0000404200002c440000b8440000c644000012450000
+    m_ExpandedIDs: 00000000ca2b0000d42b00006c2c0000642d00006c2d0000402e0000aa300000e8300000f230000010330000123300001433000016330000183300001a3300001c330000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -548,7 +548,7 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
+    m_SelectedIDs: cc300000
     m_LastClickedID: 0
     m_ExpandedIDs: 96fbffff00000000
     m_RenameOverlay:
@@ -606,9 +606,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 1.1844418, y: -0.071211845, z: 0.81044275}
+    m_Target: {x: 1.1665828, y: -0.29669237, z: 1.0493069}
     speed: 2
-    m_Value: {x: 1.1844418, y: -0.071211845, z: 0.81044275}
+    m_Value: {x: 1.1665828, y: -0.29669237, z: 1.0493069}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -636,9 +636,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: -0.084842205, y: 0.90677005, z: -0.34941983, w: -0.22017178}
   m_Size:
-    m_Target: 9.945049
+    m_Target: 9.864739
     speed: 2
-    m_Value: 9.945049
+    m_Value: 9.864739
   m_Ortho:
     m_Target: 0
     speed: 2
