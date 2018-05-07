@@ -29,7 +29,7 @@ public partial class ReadConfig : MonoBehaviour {
 
     private List<Structs.Entrance> Entrances = new List<Structs.Entrance>();
     private List<Structs.Exit> exits         = new List<Structs.Exit>();
-    private List<Vector4> stations   = new List<Vector4>();
+    private List<Vector4> stations           = new List<Vector4>();
 
     /* Aus XXX.am_fmt */
     private int vertCount;
@@ -46,10 +46,10 @@ public partial class ReadConfig : MonoBehaviour {
         ReadTriangulation();
     }
     
-	// Update is called once per frame
-	void Update () {
- 
-	}
+    List<Structs.Entrance> getEntrances ()
+    {
+        return Entrances;
+    }
 
     void ReadConfigDat()
     {
@@ -62,94 +62,76 @@ public partial class ReadConfig : MonoBehaviour {
                 if (line.Contains("Gebietsdaten"))
                 {
                     triangulation = Helper.SplitWhitespace(configData[i + 1])[0];
-                    //Debug.Log ("Triangulation: " + triangulation);
                     globalRefinement = float.Parse(Helper.SplitWhitespace(configData[i + 2])[0]);
-                    //Debug.Log ("Global Refinement: " + globalRefinement);
                     localRefinement = float.Parse(Helper.SplitWhitespace(configData[i + 3])[0]);
-                    //Debug.Log ("Local Refinement: " + localRefinement);
                     localRefinementMode = int.Parse(Helper.SplitWhitespace(configData[i + 4])[0]);
-                    //Debug.Log ("Local Refinement Mode: " + localRefinementMode);
-
-
                     i = i + 4;
                 }
                 else if (line.Contains("Charakteristische Laengen"))
                 {
 
                     length = float.Parse(Helper.SplitWhitespace(configData[i + 1])[0]);
-                    //Debug.Log ("Length: " + length);
                     time = float.Parse(Helper.SplitWhitespace(configData[i + 2])[0]);
-                    //Debug.Log ("Time: " + time);
                     dencity = float.Parse(Helper.SplitWhitespace(configData[i + 3])[0]);
-                    //Debug.Log ("Dencity: " + dencity);
                     velocity = float.Parse(Helper.SplitWhitespace(configData[i + 4])[0]);
-                    //Debug.Log ("Velocity: " + velocity);
-
                     i = i + 4;
                 }
                 else if (line.Contains("Anfangsbedingung"))
                 {
                     personCount = int.Parse(Helper.SplitWhitespace(configData[i + 1])[0]);
-                    //Debug.Log ("personCount: " + personCount);
                     runtime = int.Parse(Helper.SplitWhitespace(configData[i + 2])[0]);
-                    //Debug.Log ("runtime: " + runtime);
                     i = i + 2;
                 }
                 else if (line.Contains("Eingang"))
                 {
                     int EntranceCount = int.Parse(Helper.SplitWhitespace(configData[i + 1])[0]);
-                    //Debug.Log ("Structs.Entrance Count: " + Structs.EntranceCount);
                     for (int n = 1; n <= EntranceCount; n++)
                     {
                         string[] splitted = Helper.SplitWhitespace(configData[i + n + 1]);
 
                         Structs.Entrance currentEntrance = new Structs.Entrance(float.Parse(splitted[0]),
-                                                      float.Parse(splitted[1]),
-                                                      float.Parse(splitted[2]),
-                                                      float.Parse(splitted[3]),
-                                                      float.Parse(splitted[4]),
-                                                      float.Parse(splitted[5]));
+                        float.Parse(splitted[1]),
+                        float.Parse(splitted[2]),
+                        float.Parse(splitted[2]),
+                        float.Parse(splitted[2]),
+                        float.Parse(splitted[3]),
+                        float.Parse(splitted[4]),
+                        float.Parse(splitted[5]));
                         Entrances.Add(currentEntrance);
-                        //Debug.Log ("Eingang: " + currentStructs.Entrance.ToString()); 
                     }
                     i = i + EntranceCount;
                 }
                 else if (line.Contains("Ausgang"))
                 {
                     exitCount = int.Parse(Helper.SplitWhitespace(configData[i + 1])[0]);
-                    //Debug.Log ("Exit Count: " + exitCount);
                     for (int n = 1; n <= exitCount; n++)
                     {
                         string[] splitted = Helper.SplitWhitespace(configData[i + n + 1]);
                         Structs.Exit currentExit = new Structs.Exit(float.Parse(splitted[0]),
-                                                  float.Parse(splitted[1]),
-                                                  float.Parse(splitted[2]),
-                                                  float.Parse(splitted[3]));
+                        float.Parse(splitted[1]),
+                        float.Parse(splitted[2]),
+                        float.Parse(splitted[3]));
                         exits.Add(currentExit);
-                        //Debug.Log ("Ausgang: " + currentExit);
                     }
                     i = i + exitCount;
                 }
                 else if (line.Contains("Messstationen"))
                 {
                     stationCount = int.Parse(Helper.SplitWhitespace(configData[i + 1])[0]);
-                    //Debug.Log ("Station Count: " + stationCount);
                     for (int n = 1; n <= stationCount; n++)
                     {
                         string[] splitted = Helper.SplitWhitespace(configData[i + n + 1]);
                         Vector4 currentStation = new Vector4(float.Parse(splitted[0]),
-                                                     float.Parse(splitted[1]),
-                                                     float.Parse(splitted[2]),
-                                                     float.Parse(splitted[3].Split('\t')[0]));
+                        float.Parse(splitted[1]),
+                        float.Parse(splitted[2]),
+                        float.Parse(splitted[3].Split('\t')[0]));
                         stations.Add(currentStation);
-                        //Debug.Log ("Station: " + currentStation);
                     }
                     i = i + stationCount;
                 }
                 else if (line.Contains("Tracking"))
                 {
                     trackingCount = int.Parse(Helper.SplitWhitespace(configData[i + 1])[0]);
-                    //Debug.Log ("tracking Count: " + trackingCount);
                 }
             }
         }
@@ -168,10 +150,8 @@ public partial class ReadConfig : MonoBehaviour {
         for (int i = tmp; i <= tmp + (pointCount / 2) - 1; i++)
         {
             string[] splitted = Helper.SplitWhitespace(configData[i]);
-            //Debug.Log(i + " - " + configData[i]);
             points[a] = new Structs.Point(float.Parse(splitted[1]), float.Parse(splitted[2]));
             points[a+1] = new Structs.Point(float.Parse(splitted[3]), float.Parse(splitted[4]));
-            //Debug.Log(points[a] + " & " + points[a + 1]);
             a = a + 2;
         }
         a = 0;
@@ -184,21 +164,7 @@ public partial class ReadConfig : MonoBehaviour {
             vertices[a+3] = int.Parse(splitted[4]);
             vertices[a+4] = int.Parse(splitted[5]);
             vertices[a+5] = int.Parse(splitted[6]);
-            a = a + 6;   
-            //Debug.Log(vertices[a]);
+            a = a + 6;
         }
-    }
-
-
-    void OnDrawGizmos()
-    {
-        /*Gizmos.color = Color.yellow;
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            Debug.Log(vertices[i]);
-            Gizmos.DrawLine(vertices[i].first.ToVectorThree(), vertices[i].second.ToVectorThree());
-            Gizmos.DrawLine(vertices[i].second.ToVectorThree(), vertices[i].third.ToVectorThree());
-            Gizmos.DrawLine(vertices[i].first.ToVectorThree(), vertices[i].third.ToVectorThree());
-        }*/
     }
 }

@@ -83,27 +83,4 @@ public class Structs {
             return vec3;
         } 
     }
-
-    /*public struct Triangle
-    {
-        public Point first, second, third;
-
-        public Triangle(Point first, Point second, Point third)
-        {
-            this.first = first;
-            this.second = second;
-            this.third = third;
-        }
-
-        public override string ToString()
-        {
-            return "Dreieck: " + first + " - " + second + " - " + third;
-        }
-
-        public float getArea()
-        {
-            // TODO
-            return 0;
-        }
-    }*/
 }
