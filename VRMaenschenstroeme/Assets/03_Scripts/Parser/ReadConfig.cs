@@ -27,7 +27,7 @@ public partial class ReadConfig : MonoBehaviour {
     private float dencity;
     private float velocity;
 
-    private List<Structs.Entrance> Entrances = new List<Structs.Entrance>();
+    private List<Structs.Entrance> entrances = new List<Structs.Entrance>();
     private List<Structs.Exit> exits         = new List<Structs.Exit>();
     private List<Vector4> stations           = new List<Vector4>();
 
@@ -45,10 +45,20 @@ public partial class ReadConfig : MonoBehaviour {
         ReadConfigDat();
         ReadTriangulation();
     }
-    
-    List<Structs.Entrance> getEntrances ()
+
+    List<Structs.Entrance> getEntrances()
     {
-        return Entrances;
+        return entrances;
+    }
+
+    List<Structs.Exit> getExits()
+    {
+        return exits;
+    }
+
+    List<Vector4> getStations()
+    {
+        return stations;
     }
 
     void ReadConfigDat()
