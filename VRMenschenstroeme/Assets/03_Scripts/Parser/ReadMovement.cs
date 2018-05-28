@@ -7,6 +7,8 @@ using System.Linq;
 public partial class ReadConfig : MonoBehaviour
 {
     private string movementDat = "something.dat";
+
+    public List<List<Person>> MapOfPersons = new List<List<Person>>();
     
     // Use this for initialization
     /*
@@ -22,13 +24,26 @@ public partial class ReadConfig : MonoBehaviour
     {
         string[] movementData = File.ReadAllLines(movementDat);
         int prevID = -1;
+        List<Person> current = new List<Person>();
         for (int i = 0; i < movementDat.Length; i++)
         {
             string line = movementData[i];
-            Helper.spl
-            if (prevID < )
-
+            string[] splitted = Helper.SplitWhitespace(configData[i + 1]);
+            int ID = int.Parse(splitted[0]);
+            bool is_In = bool.Parse(splitted[1]);
+            Point p = new Point(float.Parse(splitted[3]), float.parse(splitted[4]));
+            float density = float.Parse(splitted[5]);
+            float velocity = float.Parse(splitted[6]);
+            
+            if (prevID > ID)
+            {
+                MapOfPersons.add(current);
+                current = new List<Person>();
+                prevID = ID;
+            }
+            current.add(new Person(p, is_In, density, velocity));
         }
+        MapOfPersons.add(current);
     }
 
 
