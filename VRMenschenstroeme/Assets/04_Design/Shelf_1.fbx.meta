@@ -1,17 +1,31 @@
 fileFormatVersion: 2
-guid: 723f953722624f74b9627cb486f03a57
+guid: ca798fbec5c459d4a9be038ae4fa30dd
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2100000: Material_004
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Tischplatte
-    7400000: Default Take
-    9500000: //RootNode
-    2186277476908879412: ImportLogs
+    100000: Cube.000
+    100002: Cube.004
+    100004: Cylinder.004
+    100006: Cylinder.005
+    100008: //RootNode
+    400000: Cube.000
+    400002: Cube.004
+    400004: Cylinder.004
+    400006: Cylinder.005
+    400008: //RootNode
+    2100000: No Name
+    2300000: Cube.000
+    2300002: Cube.004
+    2300004: Cylinder.004
+    2300006: Cylinder.005
+    3300000: Cube.000
+    3300002: Cube.004
+    3300004: Cylinder.004
+    3300006: Cylinder.005
+    4300000: Cube.004
+    4300002: Cube.000
+    4300004: Cylinder.004
+    4300006: Cylinder.005
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -87,7 +101,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
