@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Valve.VR;
 
 public class VRControllerInput : MonoBehaviour {
@@ -35,7 +36,7 @@ public class VRControllerInput : MonoBehaviour {
                 //Pick up object
                 if (heldObjects.Count < 1) {
                     interactableObject.Pickup(this);
-                    heldObjects.Add(interactableObject); 
+                    heldObjects.Add(interactableObject);
                 }
             }
         }
@@ -49,6 +50,10 @@ public class VRControllerInput : MonoBehaviour {
                 heldObjects.ForEach(x => x.Release(this));
                 heldObjects = new List<VRInteractableObject>();
             }
+        }
+        if (device.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu)) {
+            Debug.Log("Switching scene");
+            SceneManager.LoadSceneAsync(1);
         }
     }
 }
