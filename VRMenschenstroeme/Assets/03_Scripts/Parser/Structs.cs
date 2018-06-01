@@ -83,4 +83,28 @@ public class Structs {
             return vec3;
         } 
     }
+
+    public struct Person
+    {
+        public int id;
+        public Point p;
+        public bool is_In;
+        public float density;
+        public float velocity;
+        public bool created;
+
+        public Person(int id, Point p, bool is_In, float density, float velocity, bool created)
+        {
+            this.id = id;
+            this.p = p;
+            this.is_In = is_In;
+            this.density = density;
+            this.velocity = velocity;
+            this.created = created;
+        }
+        public void Created(bool created)
+        {
+            this.created = created;
+        }
+    }
 }

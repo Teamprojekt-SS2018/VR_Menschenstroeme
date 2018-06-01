@@ -7,6 +7,8 @@ public class VRControllerInput : MonoBehaviour {
 
     //Should only ever be one, but just in case
     protected List<VRInteractableObject> heldObjects;
+    public bool groß = false;
+    public GameObject player;
 
     //Controller References
     protected SteamVR_TrackedObject trackedObject;
@@ -43,7 +45,16 @@ public class VRControllerInput : MonoBehaviour {
     }
 
     private void Update() {
-        if (heldObjects.Count > 0) {
+        if (SceneManager.GetActiveScene().buildIndex == 1 && device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger)) {
+            Debug.Log("Trigger Pressed");
+            if (groß) {
+                groß = false;
+                player.transform.localScale = new Vector3(1f, 1f, 1f);
+            } else {
+                groß = true;
+                player.transform.localScale = new Vector3(2f, 2f, 2f);
+            }
+        } else if (heldObjects.Count > 0) {
             //If trigger is released
             if (device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger)) {
                 //Release any held objects
