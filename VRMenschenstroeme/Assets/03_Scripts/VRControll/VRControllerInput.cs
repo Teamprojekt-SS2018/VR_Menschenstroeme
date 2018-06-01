@@ -53,7 +53,11 @@ public class VRControllerInput : MonoBehaviour {
         }
         if (device.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu)) {
             Debug.Log("Switching scene");
-            SceneManager.LoadSceneAsync(1);
+            if (SceneManager.GetActiveScene().buildIndex == 1) {
+                SceneManager.LoadSceneAsync(0);
+            } else {
+                SceneManager.LoadSceneAsync(1);
+            }
         }
     }
 }
