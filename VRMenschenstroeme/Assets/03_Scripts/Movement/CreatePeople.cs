@@ -2,30 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreatePeople : MonoBehaviour
-{
+public class CreatePeople : MonoBehaviour {
     public GameObject capsule;
     private ReadConfig _conf;
     private ReadMovement _move;
     private Creator _creator;
-    void Start()
-    {
+    void Start() {
         _move = this.gameObject.GetComponent<ReadMovement>();
         _conf = this.gameObject.GetComponent<ReadConfig>();
         _creator = this.gameObject.GetComponent<Creator>();
         int count = 0;
         List<int> saves = new List<int>();
-        foreach (List<Structs.Person> list in _move.MapOfPersons)
-        {
-            foreach (Structs.Person person in list)
-            {
-                if (!saves.Contains(person.id))
-                {
-                    if (person.created == false)
-                    {
-                        GameObject caps = Instantiate(capsule, (person.p.ToVectorThree() * _conf.Length * _creator.scale) + new Vector3(0, 1f * _creator.scale, 0), this.transform.rotation);
+        foreach (List<Structs.Person> list in _move.MapOfPersons) {
+            foreach (Structs.Person person in list) {
+                if (!saves.Contains(person.id)) {
+                    if (person.created == false) {
+                        GameObject caps = Instantiate(capsule, new Vector3(0f, 0f, 0f), this.transform.localRotation);
+                        caps.transform.parent = gameObject.transform;
+                        caps.transform.localPosition =
+                            (person.p.ToVectorThree() * _conf.Length)
+                            + new Vector3(0, 1f, 0);
                         caps.name = count.ToString();
-                        caps.transform.localScale = caps.transform.localScale * _creator.scale;
+                        caps.transform.localScale = new Vector3(1f, 1f, 1f);
                         saves.Add(person.id);
                         ++count;
                     }
