@@ -10,10 +10,6 @@ public partial class ReadMovement : MonoBehaviour
 
     public List<List<Structs.Person>> MapOfPersons = new List<List<Structs.Person>>();
     
-    // Use this for initialization
-    /*
-     * ReadConfig muss vor ReadTrianulation laufen, da die xxx.am_fmt in der Config.dat definiert ist.
-     */
     void Awake()
     {
         ReadMovementDat();
