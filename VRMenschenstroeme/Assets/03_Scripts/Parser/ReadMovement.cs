@@ -21,29 +21,31 @@ public partial class ReadMovement : MonoBehaviour
 
     void ReadMovementDat()
     {
-        string[] movementData = File.ReadAllLines(movementDat);
-        int prevID = -1;
-        List<Structs.Person> current = new List<Structs.Person>();
-        for (int i = 0; i < movementDat.Length; i++)
-        {
-            string line = movementData[i];
-            string[] splitted = Helper.SplitWhitespace(movementData[i + 1]);
-            int ID = int.Parse(splitted[0]);
-            bool is_In = bool.Parse(splitted[1]);
-            Structs.Point p = new Structs.Point(float.Parse(splitted[3]), float.Parse(splitted[4]));
-            float density = float.Parse(splitted[5]);
-            float velocity = float.Parse(splitted[6]);
+        string data = File.ReadAllText(movementDat);
+        string[] movementData = data.split("\n");
 
-            if (prevID > ID)
+        this.persons = new Dictionary<int, List<Structs.PersonPostition>>
+        string[] splitted;
+
+        int id = -1;
+
+        foreach (var line in movementData) 
+        {
+            splitted = Helper.SplitWhitespace(line);
+
+            id = int.Parse(splited[0]);
+
+            if (!persons.ContainsKey(id))
             {
-                MapOfPersons.Add(current);
-                current = new List<Structs.Person>();
-                
+                persons.Add(id, new List<PersonPostition>());
             }
-            prevID = ID;
-            current.Add(new Structs.Person(p, is_In, density, velocity));
-            System.Console.Write("test");
+            if (splitted[1].Equals("1")) 
+            {
+                persons[id].Add(new PersonPosition(new Vector3(float.Parse(splitted[3]) * rc.Length * cr.scale, 1, float.Parse(splitted[4]) * rc.Length * cr.scale), float.Parse(splitted[2])));
+            } else
+            {
+                persons[id].Add(new PersonPosition(float.Parse(splitted[2])));
+            }
         }
-        MapOfPersons.Add(current);
     }
 }
