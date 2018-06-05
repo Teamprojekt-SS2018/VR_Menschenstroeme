@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Valve.VR;
@@ -9,6 +10,9 @@ public class VRControllerInput : MonoBehaviour {
     protected List<VRInteractableObject> heldObjects;
     public bool groß = false;
     public GameObject player;
+    public double grabDistance = 0.3;
+    private bool scaling = false;
+    private VRInteractableObject scalingObject;
 
     //Controller References
     protected SteamVR_TrackedObject trackedObject;
@@ -22,52 +26,68 @@ public class VRControllerInput : MonoBehaviour {
         //Instantiate lists
         trackedObject = GetComponent<SteamVR_TrackedObject>();
         heldObjects = new List<VRInteractableObject>();
+        //init collider 
+        BoxCollider sc = gameObject.AddComponent<BoxCollider>() as BoxCollider;
+        sc.isTrigger = true;
+        sc.center = new Vector3(0f, 0f, 0f);
+        sc.size = new Vector3(1f, 1f, 1f);
     }
 
     private void OnTriggerStay(Collider collider) {
         //If object is an interactable item
         VRInteractableObject interactableObject = collider.GetComponent<VRInteractableObject>();
-        if (interactableObject != null) {
+        if (interactableObject != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger)) {
+            Debug.Log("Trigger down");
+            if (!interactableObject.IsAlreadyPickedup) {
+                double distanceInteractableObj = Vector3.Distance(interactableObject.transform.position, transform.position);
 
-            double distanceInteractableObj = Vector3.Distance(interactableObject.transform.position, transform.position);
-            double grabDistance = 0.3;
-            Debug.Log("grabDistance:" + distanceInteractableObj);
-
-            //if trigger button is down
-            if (device.GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger) && distanceInteractableObj < grabDistance) {
-                //Pick up object
-                if (heldObjects.Count < 1) {
+                //if trigger button is down
+                if (distanceInteractableObj < grabDistance &&
+                    heldObjects.Count < 1) {
+                    //Pick up object
                     interactableObject.Pickup(this);
                     heldObjects.Add(interactableObject);
+                    Debug.Log("Trigger pressed down");
                 }
+            } else {
+                interactableObject.startScaling(this);
+                scaling = true;
             }
         }
     }
 
     private void Update() {
-        if (SceneManager.GetActiveScene().buildIndex == 1 && device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger)) {
-            Debug.Log("Trigger Pressed");
+        if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) { TriggerPressedEventHandler(); } else
+        if (device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu)) { ApplicationMenuPressedEventHandler(); } else
+        if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip)) { GripPressedEventHandler(); }
+
+    }
+    private void TriggerPressedEventHandler() {
+        //If trigger is released
+        if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) {
+            scaling = false;
+            if (scalingObject != null) {
+                scalingObject.stopScaling();
+            }
+            //Release any held objects
+            heldObjects.ForEach(x => x.Release(this));
+            heldObjects = new List<VRInteractableObject>();
+        }
+    }
+
+    private void ApplicationMenuPressedEventHandler() {
+        int nextScene = (SceneManager.GetActiveScene().buildIndex * -1) + 1;
+        SceneManager.LoadSceneAsync(nextScene);
+    }
+
+    private void GripPressedEventHandler() {
+        if (SceneManager.GetActiveScene().buildIndex == 1) {
             if (groß) {
                 groß = false;
                 player.transform.localScale = new Vector3(1f, 1f, 1f);
             } else {
                 groß = true;
                 player.transform.localScale = new Vector3(2f, 2f, 2f);
-            }
-        } else if (heldObjects.Count > 0) {
-            //If trigger is released
-            if (device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger)) {
-                //Release any held objects
-                heldObjects.ForEach(x => x.Release(this));
-                heldObjects = new List<VRInteractableObject>();
-            }
-        }
-        if (device.GetPressDown(SteamVR_Controller.ButtonMask.ApplicationMenu)) {
-            Debug.Log("Switching scene");
-            if (SceneManager.GetActiveScene().buildIndex == 1) {
-                SceneManager.LoadSceneAsync(0);
-            } else {
-                SceneManager.LoadSceneAsync(1);
             }
         }
     }

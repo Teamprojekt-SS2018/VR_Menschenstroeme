@@ -4,36 +4,44 @@ using UnityEngine;
 using System.IO;
 using System.Linq;
 
-public partial class ReadMovement : MonoBehaviour {
+public partial class ReadMovement : MonoBehaviour
+{
     private string movementDat = "VRData.dat";
+    Dictionary<int, List<Structs.PersonPosition>> persons;
 
-    public List<List<Structs.Person>> MapOfPersons = new List<List<Structs.Person>>();
-
-    void Awake() {
+    public List<List<Structs.PersonPosition>> MapOfPersons = new List<List<Structs.PersonPosition>>();
+    
+    void Awake()
+    {
         ReadMovementDat();
     }
 
-    void ReadMovementDat() {
+    void ReadMovementDat()
+    {
         string data = File.ReadAllText(movementDat);
-        string[] movementData = data.split("\n");
+        string[] movementData = data.Split('\n');
 
-        this.persons = new Dictionary<int, List<Structs.PersonPostition>>;
+        this.persons = new Dictionary<int, List<Structs.PersonPosition>>();
         string[] splitted;
 
         int id = -1;
 
-        foreach (var line in movementData) {
+        foreach (var line in movementData) 
+        {
             splitted = Helper.SplitWhitespace(line);
 
-            id = int.Parse(splited[0]);
+            id = int.Parse(splitted[0]);
 
-            if (!persons.ContainsKey(id)) {
-                persons.Add(id, new List<PersonPostition>());
+            if (!persons.ContainsKey(id))
+            {
+                persons.Add(id, new List<Structs.PersonPosition>());
             }
-            if (splitted[1].Equals("1")) {
-                persons[id].Add(new PersonPosition(new Vector3(float.Parse(splitted[3]) * rc.Length * cr.scale, 1, float.Parse(splitted[4]) * rc.Length * cr.scale), float.Parse(splitted[2])));
-            } else {
-                persons[id].Add(new PersonPosition(float.Parse(splitted[2])));
+            if (splitted[1].Equals("1")) 
+            {
+                persons[id].Add(new Structs.PersonPosition(new Vector3(float.Parse(splitted[3]), 1, float.Parse(splitted[4])), float.Parse(splitted[2])));
+            } else
+            {
+                persons[id].Add(new Structs.PersonPosition(float.Parse(splitted[2])));
             }
         }
     }
