@@ -84,27 +84,24 @@ public class Structs {
         } 
     }
 
-    public struct Person
+    public struct PersonPosition
     {
-        public int id;
-        public Point p;
-        public bool is_In;
-        public float density;
-        public float velocity;
-        public bool created;
+        public bool activated;
+        public Vector3 position;
+        public float time;
 
-        public Person(int id, Point p, bool is_In, float density, float velocity, bool created)
+        public PersonPosition(float time)
         {
-            this.id = id;
-            this.p = p;
-            this.is_In = is_In;
-            this.density = density;
-            this.velocity = velocity;
-            this.created = created;
+            activated = false;
+            position = Vector3.zero;
+            this.time = time;
         }
-        public void Created(bool created)
+
+        public PersonPosition(Vector3 pos, float time)
         {
-            this.created = created;
+            activated = true;
+            position = pos;
+            this.time = time;
         }
     }
 }
