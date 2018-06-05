@@ -8,11 +8,14 @@ public class VRControllerInput : MonoBehaviour {
 
     //Should only ever be one, but just in case
     protected List<VRInteractableObject> heldObjects;
-    public bool groß = false;
+    private bool groß = false;
     public GameObject player;
     public double grabDistance = 0.3;
-    private bool scaling = false;
+    private bool scaling = true;
     private VRInteractableObject scalingObject;
+    public VRControllerInput otherController;
+    private float startDist = 0f;
+    private Vector3 startScale = Vector3.zero;
 
     //Controller References
     protected SteamVR_TrackedObject trackedObject;
@@ -36,43 +39,60 @@ public class VRControllerInput : MonoBehaviour {
     private void OnTriggerStay(Collider collider) {
         //If object is an interactable item
         VRInteractableObject interactableObject = collider.GetComponent<VRInteractableObject>();
-        if (interactableObject != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger)) {
-            Debug.Log("Trigger down");
-            if (!interactableObject.IsAlreadyPickedup) {
-                double distanceInteractableObj = Vector3.Distance(interactableObject.transform.position, transform.position);
 
-                //if trigger button is down
-                if (distanceInteractableObj < grabDistance &&
-                    heldObjects.Count < 1) {
-                    //Pick up object
-                    interactableObject.Pickup(this);
-                    heldObjects.Add(interactableObject);
-                    Debug.Log("Trigger pressed down");
-                }
-            } else {
-                interactableObject.startScaling(this);
-                scaling = true;
+        if (interactableObject != null && interactableObject.transform.parent.name == otherController.name && device.GetPress(SteamVR_Controller.ButtonMask.Trigger)) {
+            scaleSelected(interactableObject.gameObject);
+        } else if (interactableObject != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger)) {
+            double distanceInteractableObj = Vector3.Distance(interactableObject.transform.position, transform.position);
+
+            //if trigger button is down
+            if (distanceInteractableObj < grabDistance &&
+                heldObjects.Count < 1) {
+                //Pick up object
+                interactableObject.Pickup(this);
+                heldObjects.Add(interactableObject);
+
             }
         }
     }
 
     private void Update() {
-        if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) { TriggerPressedEventHandler(); } else
+        if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) { TriggerPressUpEventHandler(); } else
         if (device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu)) { ApplicationMenuPressedEventHandler(); } else
         if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip)) { GripPressedEventHandler(); }
 
     }
-    private void TriggerPressedEventHandler() {
-        //If trigger is released
-        if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) {
+    private void TriggerPressUpEventHandler() {
+        //Release any held objects
+        heldObjects.ForEach(x => x.Release(this));
+        heldObjects = new List<VRInteractableObject>();
+        scaling = true;
+        startScale = Vector3.zero;
+    }
+
+    void scaleSelected(GameObject selected) {
+        //Vector3 velocity = otherController.device.velocity;
+        //Vector3 newScale = Vector3.zero;
+
+        //float max = Mathf.Max(Mathf.Max(Mathf.Abs(velocity.x), Mathf.Abs(velocity.y)), Mathf.Abs(velocity.z));
+
+        //if (max == Mathf.Abs(velocity.x)) {
+        //    newScale = selected.transform.localScale + new Vector3(velocity.x, 0, 0);
+        //} else if (max == Mathf.Abs(velocity.y)) {
+        //    newScale = selected.transform.localScale + new Vector3(0, velocity.y, 0);
+        //} else if (max == Mathf.Abs(velocity.z)) {
+        //    newScale = selected.transform.localScale + new Vector3(0, 0, velocity.z);
+        //}
+        //selected.transform.localScale = newScale;
+
+        if (scaling) {
             scaling = false;
-            if (scalingObject != null) {
-                scalingObject.stopScaling();
-            }
-            //Release any held objects
-            heldObjects.ForEach(x => x.Release(this));
-            heldObjects = new List<VRInteractableObject>();
+            startDist = Vector3.Distance(otherController.transform.position, transform.position);
+            startScale = selected.transform.localScale;
         }
+
+        float scale = Vector3.Distance(otherController.transform.position, transform.position) / startDist;
+        selected.transform.localScale = startScale * scale;
     }
 
     private void ApplicationMenuPressedEventHandler() {
@@ -81,14 +101,12 @@ public class VRControllerInput : MonoBehaviour {
     }
 
     private void GripPressedEventHandler() {
-        if (SceneManager.GetActiveScene().buildIndex == 1) {
-            if (groß) {
-                groß = false;
-                player.transform.localScale = new Vector3(1f, 1f, 1f);
-            } else {
-                groß = true;
-                player.transform.localScale = new Vector3(2f, 2f, 2f);
-            }
+        if (groß) {
+            groß = false;
+            player.transform.localScale = new Vector3(1f, 1f, 1f);
+        } else {
+            groß = true;
+            player.transform.localScale = new Vector3(2f, 2f, 2f);
         }
     }
 }
