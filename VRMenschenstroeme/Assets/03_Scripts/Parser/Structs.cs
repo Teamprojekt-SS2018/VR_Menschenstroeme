@@ -89,19 +89,22 @@ public class Structs {
         public bool activated;
         public Vector3 position;
         public float time;
+        public float density;
 
         public PersonPosition(float time)
         {
             activated = false;
             position = Vector3.zero;
             this.time = time;
+            this.density = 0;
         }
 
-        public PersonPosition(Vector3 pos, float time)
+        public PersonPosition(Vector3 pos, float time, float density)
         {
             activated = true;
             position = pos;
             this.time = time;
+            this.density = density;
         }
     }
 }
