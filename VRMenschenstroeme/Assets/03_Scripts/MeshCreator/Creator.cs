@@ -1,39 +1,54 @@
-﻿using UnityEngine;
-using System.Linq;
+﻿using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Linq;
 using Valve.VR.InteractionSystem;
 
-public class Creator : MonoBehaviour {
-
+[RequireComponent(typeof(ReadConfig))]
+public class Creator : MonoBehaviour
+{
     private ReadConfig _conf;
     private GameObject _fence;
 
+    public Material floorMaterial;
     public Material fenceMaterial;
-    public float scale;
-    public bool disableFences = false;
-    public bool initTeleport = false;
-
+    [Range(0, 127)]
+    public int scene = 1;
+    public bool noFenceAndInitTeleport = false;
+    
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         _conf = this.gameObject.GetComponent<ReadConfig>();
         this.createFloorMesh();
-        if (!disableFences)
-            this.createFence();
-        if (initTeleport)
+        if (noFenceAndInitTeleport)
+        {
+            if (this.gameObject.GetComponent<TeleportAreaMeshcreator>() == null)
+            {
+                this.gameObject.AddComponent<TeleportAreaMeshcreator>();
+            }
             this.gameObject.GetComponent<TeleportAreaMeshcreator>().Init();
+        }
+        else
+        {
+            this.createFence();
+        }
     }
 
     void createFloorMesh()
     {
         Mesh mesh = new Mesh();
-        this.gameObject.GetComponent<MeshFilter>().mesh = mesh;
+        this.gameObject.AddComponent<MeshRenderer>().material = this.floorMaterial;
+        this.gameObject.AddComponent<MeshFilter>().mesh = mesh;
 
-        mesh.vertices = _conf.Points.Select(p => p.ToVectorThree()  * _conf.Length * this.scale).ToArray<Vector3>();
+        mesh.vertices = _conf.Points.Select(p => p.ToVectorThree() * _conf.Length).ToArray<Vector3>();
         mesh.vertices = mesh.vertices.Take(mesh.vertices.Length - 1).ToArray();
         mesh.uv = _conf.Points.Select(p => p.ToVectorTwo()).ToArray<Vector2>().Take(mesh.vertices.Length).ToArray();
         mesh.triangles = _conf.Vertices.Take(_conf.Vertices.Length - 3).Reverse().ToArray<int>();
         mesh.RecalculateNormals();
-        this.gameObject.GetComponent<MeshCollider>().sharedMesh = mesh;
+        if (SceneManager.GetActiveScene().buildIndex == this.scene)
+            this.gameObject.AddComponent<MeshCollider>().sharedMesh = mesh;
     }
 
     void createFence()
@@ -57,16 +72,16 @@ public class Creator : MonoBehaviour {
             if (!mapping.ContainsKey(el.Value.x))
             {
                 mapping.Add(el.Value.x, ++index);
-                fenceVertices[index] = this._conf.Points[el.Value.x].ToVectorThree() * this._conf.Length * this.scale;
+                fenceVertices[index] = this._conf.Points[el.Value.x].ToVectorThree() * this._conf.Length;
                 ++index;
-                fenceVertices[index] = this._conf.Points[el.Value.x].ToVectorThree() * this._conf.Length * this.scale + new Vector3(0, this._conf.Length * this.scale / 10, 0);
+                fenceVertices[index] = this._conf.Points[el.Value.x].ToVectorThree() * this._conf.Length + new Vector3(0, this._conf.Length / 10, 0);
             }
             if (!mapping.ContainsKey(el.Value.y))
             {
                 mapping.Add(el.Value.y, ++index);
-                fenceVertices[index] = this._conf.Points[el.Value.y].ToVectorThree() * this._conf.Length * this.scale;
+                fenceVertices[index] = this._conf.Points[el.Value.y].ToVectorThree() * this._conf.Length;
                 ++index;
-                fenceVertices[index] = this._conf.Points[el.Value.y].ToVectorThree() * this._conf.Length * this.scale + new Vector3(0, this._conf.Length * this.scale / 10, 0);
+                fenceVertices[index] = this._conf.Points[el.Value.y].ToVectorThree() * this._conf.Length + new Vector3(0, this._conf.Length / 10, 0);
             }
         }
 
