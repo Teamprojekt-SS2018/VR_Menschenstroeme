@@ -17,7 +17,6 @@ public class CreateBlobs : MonoBehaviour
         this.maxTime = rm.persons[0][rm.persons[0].Count - 1].time;
         foreach (var person in rm.persons)
         {
-            Debug.Log(person.Value[0].position);
             MoveScript go = Instantiate(capsule, new Vector3(0f,0f,0f), this.transform.rotation).GetComponent<MoveScript>();
             go.transform.parent = gameObject.transform;
             go.transform.localPosition = person.Value[0].position * conf.Length + new Vector3(0, 1f, 0);
