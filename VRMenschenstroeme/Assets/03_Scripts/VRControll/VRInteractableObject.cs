@@ -5,24 +5,50 @@ public class VRInteractableObject : MonoBehaviour {
     protected Rigidbody rigidBody;
     protected bool originalKinematicState;
     protected Transform originalParent;
+    private int index;
+    public bool clonedObject = false;
 
     private void Awake() {
         rigidBody = GetComponent<Rigidbody>();
-
+        rigidBody.constraints = RigidbodyConstraints.FreezeAll;
         //Capture object's original parent and kinematic state
         originalParent = transform.parent;
         originalKinematicState = rigidBody.isKinematic;
     }
 
-    public void Pickup(VRControllerInput controller) {
+    public VRInteractableObject Pickup(VRControllerInput controller) {
+        if (clonedObject) {
+            return PickupAfterClone(controller);
+        } else {
+            return clonePickup(controller);
+        }
+    }
+
+    private VRInteractableObject clonePickup(VRControllerInput controller) {
+        //this.GetComponent<BoxCollider>().enabled = false;
+        GameObject newObject = Instantiate(this.gameObject, this.transform.position, this.transform.rotation);
+        VRInteractableObject newInteractableObject = newObject.GetComponent(typeof(VRInteractableObject)) as VRInteractableObject;
+        newInteractableObject.transform.localScale = gameObject.transform.lossyScale;
+        newObject.gameObject.name = this.name + "_" + index++;
+        newInteractableObject.GetComponent<Rigidbody>().isKinematic = true;
+        newInteractableObject.originalParent = originalParent;
+        newInteractableObject.originalKinematicState = originalKinematicState;
+        newInteractableObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        //DeleteObjectOnHighRange deleteObject = newObject.GetComponent(typeof(DeleteObjectOnHighRange)) as DeleteObjectOnHighRange;
+        //deleteObject.DeleteRange = this.GetComponent<DeleteObjectOnHighRange>().DeleteRange;
+        newInteractableObject.transform.SetParent(controller.gameObject.transform);
+        newInteractableObject.clonedObject = true;
+        return newInteractableObject;
+    }
+
+    private VRInteractableObject PickupAfterClone(VRControllerInput controller) {
         //Make object kinematic
         //(Not effected by physics, but still able to effect other objects with physics)
         rigidBody.isKinematic = true;
         //Parent object to hand
-        this.transform.SetParent(controller.gameObject.transform);
+        transform.SetParent(controller.gameObject.transform);
+        return this;
     }
-
-
 
     public void Release(VRControllerInput controller) {
         //Make sure the hand is still the parent
@@ -40,8 +66,8 @@ public class VRInteractableObject : MonoBehaviour {
                 transform.SetParent(null);
             }
             //Throw Object
-            rigidBody.velocity = controller.device.velocity;
-            rigidBody.angularVelocity = controller.device.angularVelocity;
+            rigidBody.velocity = controller.Device.velocity;
+            rigidBody.angularVelocity = controller.Device.angularVelocity;
         }
     }
 }

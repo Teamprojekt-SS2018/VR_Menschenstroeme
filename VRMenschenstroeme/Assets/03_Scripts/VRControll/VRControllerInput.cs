@@ -19,7 +19,7 @@ public class VRControllerInput : MonoBehaviour {
 
     //Controller References
     protected SteamVR_TrackedObject trackedObject;
-    public SteamVR_Controller.Device device {
+    public SteamVR_Controller.Device Device {
         get {
             return SteamVR_Controller.Input((int)trackedObject.index);
         }
@@ -40,26 +40,25 @@ public class VRControllerInput : MonoBehaviour {
         //If object is an interactable item
         VRInteractableObject interactableObject = collider.GetComponent<VRInteractableObject>();
 
-        if (interactableObject != null && interactableObject.transform.parent.name == otherController.name && device.GetPress(SteamVR_Controller.ButtonMask.Trigger)) {
+        if (interactableObject != null && interactableObject.transform.parent.name == otherController.name && Device.GetPress(SteamVR_Controller.ButtonMask.Trigger)) {
             scaleSelected(interactableObject.gameObject);
-        } else if (interactableObject != null && device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger)) {
+        } else if (interactableObject != null && Device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger)) {
             double distanceInteractableObj = Vector3.Distance(interactableObject.transform.position, transform.position);
 
             //if trigger button is down
             if (distanceInteractableObj < grabDistance &&
                 heldObjects.Count < 1) {
                 //Pick up object
-                interactableObject.Pickup(this);
-                heldObjects.Add(interactableObject);
+                heldObjects.Add(interactableObject.Pickup(this));
 
             }
         }
     }
 
     private void Update() {
-        if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) { TriggerPressUpEventHandler(); } else
-        if (device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu)) { ApplicationMenuPressedEventHandler(); } else
-        if (device.GetPressUp(SteamVR_Controller.ButtonMask.Grip)) { GripPressedEventHandler(); }
+        if (Device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) { TriggerPressUpEventHandler(); } else
+        if (Device.GetPressUp(SteamVR_Controller.ButtonMask.ApplicationMenu)) { ApplicationMenuPressedEventHandler(); } else
+        if (Device.GetPressUp(SteamVR_Controller.ButtonMask.Grip)) { GripPressedEventHandler(); }
 
     }
     private void TriggerPressUpEventHandler() {
@@ -71,20 +70,6 @@ public class VRControllerInput : MonoBehaviour {
     }
 
     void scaleSelected(GameObject selected) {
-        //Vector3 velocity = otherController.device.velocity;
-        //Vector3 newScale = Vector3.zero;
-
-        //float max = Mathf.Max(Mathf.Max(Mathf.Abs(velocity.x), Mathf.Abs(velocity.y)), Mathf.Abs(velocity.z));
-
-        //if (max == Mathf.Abs(velocity.x)) {
-        //    newScale = selected.transform.localScale + new Vector3(velocity.x, 0, 0);
-        //} else if (max == Mathf.Abs(velocity.y)) {
-        //    newScale = selected.transform.localScale + new Vector3(0, velocity.y, 0);
-        //} else if (max == Mathf.Abs(velocity.z)) {
-        //    newScale = selected.transform.localScale + new Vector3(0, 0, velocity.z);
-        //}
-        //selected.transform.localScale = newScale;
-
         if (scaling) {
             scaling = false;
             startDist = Vector3.Distance(otherController.transform.position, transform.position);
