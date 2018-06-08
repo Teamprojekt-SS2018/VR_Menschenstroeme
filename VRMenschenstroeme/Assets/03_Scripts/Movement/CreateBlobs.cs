@@ -19,8 +19,8 @@ public class CreateBlobs : MonoBehaviour
         {
             MoveScript go = Instantiate(capsule, new Vector3(0f,0f,0f), this.transform.rotation).GetComponent<MoveScript>();
             go.transform.parent = gameObject.transform;
-            go.transform.localPosition = person.Value[0].position * conf.Length + new Vector3(0, 1f, 0);
-            go.transform.localScale = new Vector3(1f, 1f, 1f);
+            go.transform.localPosition = person.Value[0].position * conf.Length + new Vector3(0, 0.9f, 0);
+            go.transform.localScale = new Vector3(0.5f, 0.9f, 0.5f);
             go.posistions = person.Value;
             go.cb = this;
             go.conf = conf;

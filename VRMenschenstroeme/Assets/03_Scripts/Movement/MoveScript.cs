@@ -12,25 +12,30 @@ public class MoveScript : MonoBehaviour {
     public MeshRenderer rend;
     public Color high_density;
     public Color low_density;
+    private bool play = true;
     void Start()
     {
         rend = gameObject.GetComponent<MeshRenderer>();
     }
     // Update is called once per frame
     void FixedUpdate () {
+        if(play){
         if (this.posistions != null)
         {
             if (time <= cb.maxTime - this.moveTime)
             {
                 this.time += Time.deltaTime;
-                float distance = Vector3.Distance(this.transform.localPosition, posistions[(int)(this.time / this.moveTime/*conf_time*/) + 1].position * conf.Length + new Vector3(0, 1f, 0));
+                float distance = Vector3.Distance(this.transform.localPosition, posistions[(int)(this.time / this.moveTime/*conf_time*/) + 1].position * conf.Length + new Vector3(0, 0.9f, 0));
                 
-                this.transform.localPosition = Vector3.MoveTowards(this.transform.localPosition, posistions[(int)(this.time / this.moveTime/*conf_time*/) + 1].position * conf.Length + new Vector3(0, 1f, 0),distance / (this.moveTime/Time.fixedDeltaTime));
+                this.transform.localPosition = Vector3.MoveTowards(this.transform.localPosition, posistions[(int)(this.time / this.moveTime/*conf_time*/) + 1].position * conf.Length + new Vector3(0, 0.9f, 0),distance / (this.moveTime/Time.fixedDeltaTime));
                 rend.material.color = Color.Lerp(low_density, high_density, posistions[(int)(this.time / this.moveTime/*conf_time*/)].density);
-                if (!this.posistions[(int)(this.time / this.moveTime/*conf_time*/)].activated)
+                if (!this.posistions[(int)(this.time / this.moveTime/*conf_time*/) + 1].activated)
                     this.gameObject.SetActive(false);
             }
         }
-
+        }
+        if(Input.GetKeyDown("up")){
+            play = !play;
+        }
     }
 }
