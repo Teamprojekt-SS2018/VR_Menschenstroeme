@@ -14,7 +14,7 @@ public class LoadPrefabsInResources : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        prefabs = Resources.LoadAll<GameObject>("");
+        prefabs = Resources.LoadAll<GameObject>("0_SimulationObjects\\");
 
         ShelfGameObjects.Add(this.gameObject.transform.GetChild(0).gameObject);
         ShelfGameObjects.Add(this.gameObject.transform.GetChild(1).gameObject);
