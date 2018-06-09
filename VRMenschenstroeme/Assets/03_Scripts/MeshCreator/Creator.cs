@@ -14,7 +14,7 @@ public class Creator : MonoBehaviour {
     public bool initTeleport = false;
 
     // Use this for initialization
-    void Start() {
+    void Start () {
         _conf = this.gameObject.GetComponent<ReadConfig>();
         this.createFloorMesh();
         if (!disableFences)
@@ -23,23 +23,21 @@ public class Creator : MonoBehaviour {
             this.gameObject.GetComponent<TeleportAreaMeshcreator>().Init();
     }
 
-    void createFloorMesh() {
+    void createFloorMesh()
+    {
         Mesh mesh = new Mesh();
         this.gameObject.GetComponent<MeshFilter>().mesh = mesh;
 
-        mesh.vertices = _conf.Points.Select(p => p.ToVectorThree() * _conf.Length * this.scale).ToArray<Vector3>();
+        mesh.vertices = _conf.Points.Select(p => p.ToVectorThree()  * _conf.Length * this.scale).ToArray<Vector3>();
         mesh.vertices = mesh.vertices.Take(mesh.vertices.Length - 1).ToArray();
         mesh.uv = _conf.Points.Select(p => p.ToVectorTwo()).ToArray<Vector2>().Take(mesh.vertices.Length).ToArray();
         mesh.triangles = _conf.Vertices.Take(_conf.Vertices.Length - 3).Reverse().ToArray<int>();
         mesh.RecalculateNormals();
-        try {
-            this.gameObject.GetComponent<MeshCollider>().sharedMesh = mesh;
-        } catch (System.Exception) {
-            Debug.Log("Map hat kein MeshCollider!!!");
-        }
+        this.gameObject.GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 
-    void createFence() {
+    void createFence()
+    {
         Mesh mesh = new Mesh();
 
         _fence = new GameObject("fence");
@@ -54,14 +52,17 @@ public class Creator : MonoBehaviour {
         Vector3[] fenceVertices = new Vector3[fences.Count * 4];
         Dictionary<int, int> mapping = new Dictionary<int, int>();
         int index = -1;
-        foreach (KeyValuePair<string, Vector2Int> el in fences) {
-            if (!mapping.ContainsKey(el.Value.x)) {
+        foreach (KeyValuePair<string, Vector2Int> el in fences)
+        {
+            if (!mapping.ContainsKey(el.Value.x))
+            {
                 mapping.Add(el.Value.x, ++index);
                 fenceVertices[index] = this._conf.Points[el.Value.x].ToVectorThree() * this._conf.Length * this.scale;
                 ++index;
                 fenceVertices[index] = this._conf.Points[el.Value.x].ToVectorThree() * this._conf.Length * this.scale + new Vector3(0, this._conf.Length * this.scale / 10, 0);
             }
-            if (!mapping.ContainsKey(el.Value.y)) {
+            if (!mapping.ContainsKey(el.Value.y))
+            {
                 mapping.Add(el.Value.y, ++index);
                 fenceVertices[index] = this._conf.Points[el.Value.y].ToVectorThree() * this._conf.Length * this.scale;
                 ++index;
@@ -75,7 +76,8 @@ public class Creator : MonoBehaviour {
 
         index = -1;
 
-        foreach (KeyValuePair<string, Vector2Int> el in fences) {
+        foreach (KeyValuePair<string, Vector2Int> el in fences)
+        {
             triangles[++index] = mapping[el.Value.x];
             triangles[++index] = mapping[el.Value.x] + 1;
             triangles[++index] = mapping[el.Value.y];
@@ -99,9 +101,11 @@ public class Creator : MonoBehaviour {
 
 
 
-    private Dictionary<string, Vector2Int> getFences(int[] triangles) {
+    private Dictionary<string, Vector2Int> getFences(int[] triangles)
+    {
         Dictionary<string, Vector2Int> fences = new Dictionary<string, Vector2Int>();
-        for (int i = 0; i < triangles.Length; i += 3) {
+        for (int i = 0; i < triangles.Length; i += 3)
+        {
             int t00 = Mathf.Min(triangles[i], triangles[i + 1]);
             int t01 = Mathf.Max(triangles[i], triangles[i + 1]);
 
@@ -111,41 +115,54 @@ public class Creator : MonoBehaviour {
             int y0 = Mathf.Min(triangles[i], triangles[i + 2]);
             int y1 = Mathf.Max(triangles[i], triangles[i + 2]);
 
-            if (!fences.ContainsKey(t00 + " - " + t01)) {
+            if (!fences.ContainsKey(t00 + " - " + t01))
+            {
                 fences.Add(t00 + " - " + t01,
                     new Vector2Int(triangles[i], triangles[i + 1]));
-            } else {
+            }
+            else
+            {
                 fences.Remove(t00 + " - " + t01);
             }
 
-            if (!fences.ContainsKey(x0 + " - " + x1)) {
+            if (!fences.ContainsKey(x0 + " - " + x1))
+            {
                 fences.Add(x0 + " - " + x1,
                     new Vector2Int(triangles[i + 1], triangles[i + 2]));
-            } else {
+            }
+            else
+            {
                 fences.Remove(x0 + " - " + x1);
             }
 
-            if (!fences.ContainsKey(y0 + " - " + y1)) {
+            if (!fences.ContainsKey(y0 + " - " + y1))
+            {
                 fences.Add(y0 + " - " + y1,
                     new Vector2Int(triangles[i + 2], triangles[i]));
-            } else {
+            }
+            else
+            {
                 fences.Remove(y0 + " - " + y1);
             }
         }
         return fences;
     }
 
-    Dictionary<string, Vector2Int> removeOuterFence(Dictionary<string, Vector2Int> fences) {
+    Dictionary<string, Vector2Int> removeOuterFence(Dictionary<string, Vector2Int> fences)
+    {
         string key = "";
         float smallest = float.PositiveInfinity;
 
         // Get the smalles part of backside
-        foreach (var keyValue in fences) {
-            if (this._conf.Points[keyValue.Value.x].y < smallest) {
+        foreach (var keyValue in fences)
+        {
+            if (this._conf.Points[keyValue.Value.x].y < smallest)
+            {
                 key = keyValue.Key;
                 smallest = this._conf.Points[keyValue.Value.x].y;
             }
-            if (this._conf.Points[keyValue.Value.y].y < smallest) {
+            if (this._conf.Points[keyValue.Value.y].y < smallest)
+            {
                 key = keyValue.Key;
                 smallest = this._conf.Points[keyValue.Value.x].y;
             }
@@ -153,11 +170,14 @@ public class Creator : MonoBehaviour {
         }
 
         // Trace and remove the outer fence starting by the smallest part
-        while (fences.ContainsKey(key)) {
+        while (fences.ContainsKey(key))
+        {
             int next = fences[key].y;
             fences.Remove(key);
-            foreach (var el in fences) {
-                if (el.Value.x == next || el.Value.y == next) {
+            foreach (var el in fences)
+            {
+                if (el.Value.x == next || el.Value.y == next)
+                {
                     key = el.Key;
                     break;
                 }
