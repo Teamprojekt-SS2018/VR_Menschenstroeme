@@ -21,7 +21,8 @@ GameObject:
   - component: {fileID: 4373106170554834}
   - component: {fileID: 33727220520290422}
   - component: {fileID: 23394237170546590}
-  - component: {fileID: 114957524462827706}
+  - component: {fileID: 136352743535166664}
+  - component: {fileID: 114465845460530758}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -84,7 +85,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1164517722153106}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114957524462827706
+--- !u!114 &114465845460530758
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -99,5 +100,18 @@ MonoBehaviour:
   moveTime: 1
   conf: {fileID: 0}
   rend: {fileID: 0}
-  high_density: {r: 1, g: 0, b: 0, a: 0}
-  low_density: {r: 0, g: 1, b: 0.18304133, a: 0}
+  high_density: {r: 1, g: 0, b: 0.027146816, a: 0}
+  low_density: {r: 0.031372547, g: 1, b: 0.26418656, a: 0}
+--- !u!136 &136352743535166664
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1164517722153106}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
