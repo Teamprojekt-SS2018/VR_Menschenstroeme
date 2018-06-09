@@ -12,7 +12,7 @@ Material:
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 5000
   stringTagMap:
     OriginalShader: Standard
     RenderType: Transparent
@@ -80,7 +80,7 @@ Material:
     - _BumpScale: 1
     - _ColorMask: 15
     - _Cutoff: 0.5
-    - _Darken: 1
+    - _Darken: 0.359
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _Emission: 0.01
@@ -95,7 +95,7 @@ Material:
     - _OcclusionStrengthIndirectDiffuse: 1
     - _OcclusionStrengthIndirectSpecular: 1
     - _Parallax: 0.02
-    - _SeeThru: 0.17
+    - _SeeThru: 0.218
     - _SpecularMode: 2
     - _SrcBlend: 1
     - _Stencil: 0
@@ -120,7 +120,7 @@ Material:
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _Specular: {r: 0, g: 0, b: 0, a: 0}
-    - _TintColor: {r: 0, g: 1, b: 1, a: 0.453}
+    - _TintColor: {r: 0, g: 0.8674183, b: 1, a: 0.453}
     - g_vWorldAlignedNormalTangentU: {r: -1, g: 0, b: 0, a: 0}
     - g_vWorldAlignedNormalTangentV: {r: 0, g: 0, b: 1, a: 0}
     - g_vWorldAlignedTextureNormal: {r: 0, g: 1, b: 0, a: 0}
