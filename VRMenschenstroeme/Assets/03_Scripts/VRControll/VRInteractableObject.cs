@@ -42,12 +42,15 @@ public class VRInteractableObject : MonoBehaviour {
         //Make object kinematic
         //(Not effected by physics, but still able to effect other objects with physics)
         rigidBody.isKinematic = true;
+        rigidBody.constraints = RigidbodyConstraints.None;
         //Parent object to hand
         transform.SetParent(controller.gameObject.transform);
         return this;
     }
 
     public void Release(VRControllerInput controller) {
+        this.rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+
         //Make sure the hand is still the parent
         //Could have been transfered to another hand
         if (transform.parent == controller.gameObject.transform) {
