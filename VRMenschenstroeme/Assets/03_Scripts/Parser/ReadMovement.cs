@@ -37,7 +37,7 @@ public partial class ReadMovement : MonoBehaviour
             }
             if (splitted[1].Equals("1")) 
             {
-                persons[id].Add(new Structs.PersonPosition(new Vector3(float.Parse(splitted[3]), 1, float.Parse(splitted[4])), float.Parse(splitted[2]), float.Parse(splitted[5])));
+                persons[id].Add(new Structs.PersonPosition(new Vector3(float.Parse(splitted[3]), 0, float.Parse(splitted[4])), float.Parse(splitted[2]), float.Parse(splitted[5])));
             } else
             {
                 persons[id].Add(new Structs.PersonPosition(float.Parse(splitted[2])));

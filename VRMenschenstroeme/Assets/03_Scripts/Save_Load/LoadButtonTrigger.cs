@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveButtonTrigger : MonoBehaviour {
+public class LoadButtonTrigger : MonoBehaviour {
 
     public GameObject table;
 
@@ -14,9 +14,8 @@ public class SaveButtonTrigger : MonoBehaviour {
             MeshRenderer meshRenderer = gameObject.GetComponent<MeshRenderer>();
             Color originColor = meshRenderer.material.color;
             meshRenderer.material.color = Color.red;
-            table.GetComponent<SaveLoad_PlacedObjects>().save();
+            table.GetComponent<SaveLoad_PlacedObjects>().load();
             meshRenderer.material.color = originColor;
         }
     }
-
 }

@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class GetPlacedObjects : MonoBehaviour {
+public class SaveLoad_PlacedObjects : MonoBehaviour {
 
     // Declare and initialize a new List of GameObjects called currentCollisions.
     List<GameObject> objectsOnTable = new List<GameObject>();
+    public string SaveGameName = "SimulationSave";
 
     void OnCollisionEnter(Collision col) {
         // Add the GameObject collided with to the list.
@@ -18,13 +20,12 @@ public class GetPlacedObjects : MonoBehaviour {
     }
 
     public void save() {
-        Debug.Log("Saving...");
-        GameObject map  = transform.Find("Map").gameObject;
-
-        objectsOnTable.ForEach(x=> x.transform.SetParent(map.transform));
-        Debug.Log("Saved!");
-
-
+        GameObject map = transform.Find("Map").gameObject;
+        foreach (GameObject item in objectsOnTable) {
+            item.transform.SetParent(map.transform);
+        }
     }
 
+    public void load() {
+    }
 }

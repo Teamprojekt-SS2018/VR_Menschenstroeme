@@ -296,8 +296,8 @@ GameObject:
   - component: {fileID: 114546732839028478}
   - component: {fileID: 114605795516062908}
   - component: {fileID: 33909880208073494}
+  - component: {fileID: 114681176888707310}
   - component: {fileID: 23402345248698546}
-  - component: {fileID: 114234637756255160}
   - component: {fileID: 114942860361726566}
   m_Layer: 0
   m_Name: Map
@@ -3897,18 +3897,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114234637756255160
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1221601710675588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de4f2269f4387a94fa2eff270b55fe4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementDat: VRData.dat
 --- !u!114 &114239134809144310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4198,6 +4186,17 @@ MonoBehaviour:
   titleHighlightedColor: {r: 0.45280647, g: 0.9191189, b: 0.45602244, a: 0.5}
   titleLockedColor: {r: 0.7867738, g: 0.5544188, b: 0.1388565, a: 0.5}
   playerSpawnPoint: 0
+--- !u!114 &114681176888707310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1221601710675588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d3a98b89a51f745be6a103b1663b52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114738843403076098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4358,8 +4357,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022f8bfc90e1e55448ac1d69471c1682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  capsule: {fileID: 1164517722153106, guid: 47d7234eebf1e79469cb4a51d1ac1520, type: 2}
-  rm: {fileID: 114234637756255160}
+  capsule: {fileID: 1164517722153106, guid: e627c9d62ad090d4681c97b91a2aa962, type: 2}
+  rm: {fileID: 114681176888707310}
   conf: {fileID: 114605795516062908}
   maxTime: 0
 --- !u!135 &135064117348137236

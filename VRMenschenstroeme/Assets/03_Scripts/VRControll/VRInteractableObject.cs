@@ -49,7 +49,7 @@ public class VRInteractableObject : MonoBehaviour {
     }
 
     public void Release(VRControllerInput controller) {
-        this.rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
+        //this.rigidBody.constraints = RigidbodyConstraints.FreezeRotation;
 
         //Make sure the hand is still the parent
         //Could have been transfered to another hand
