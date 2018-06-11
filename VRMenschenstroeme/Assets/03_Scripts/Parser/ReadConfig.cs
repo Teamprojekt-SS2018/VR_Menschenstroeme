@@ -85,6 +85,14 @@ public partial class ReadConfig : MonoBehaviour {
         }
     }
 
+    public float Time
+    {
+        get
+        {
+            return this.time;
+        }
+    }
+
     void ReadConfigDat()
     {
         string[] configData = File.ReadAllLines(config);
