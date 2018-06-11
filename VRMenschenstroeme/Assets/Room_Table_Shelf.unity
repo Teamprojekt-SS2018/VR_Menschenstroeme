@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18047097, g: 0.22593816, b: 0.3070285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18047038, g: 0.22593758, b: 0.30702764, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -113,7 +113,75 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!43 &45263246
+--- !u!1001 &161096597
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 1.022
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 33697711715175770, guid: c7ffb7f080ee85a499e7fe85da4fdb16,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 471685664}
+    - target: {fileID: 23773865795055796, guid: c7ffb7f080ee85a499e7fe85da4fdb16,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 1623499403}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &194115051 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1221601710675588, guid: 60f7f31a816c9664992d482f791bd390,
+    type: 2}
+  m_PrefabInternal: {fileID: 1025342172}
+--- !u!114 &194115053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 194115051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d3a98b89a51f745be6a103b1663b52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!43 &471685664
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -259,91 +327,6 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
---- !u!1001 &161096597
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 1.022
-      objectReference: {fileID: 0}
-    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4066535497830752, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 33697711715175770, guid: c7ffb7f080ee85a499e7fe85da4fdb16,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 45263246}
-    - target: {fileID: 23773865795055796, guid: c7ffb7f080ee85a499e7fe85da4fdb16,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 651799781}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: c7ffb7f080ee85a499e7fe85da4fdb16, type: 2}
-  m_IsPrefabParent: 0
---- !u!21 &651799781
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Sprites/Default
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _AlphaTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - PixelSnap: 0
-    - _EnableExternalAlpha: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &1025342172
 Prefab:
   m_ObjectHideFlags: 0
@@ -383,7 +366,19 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114942860361726566, guid: 60f7f31a816c9664992d482f791bd390,
+        type: 2}
+      propertyPath: capsule
+      value: 
+      objectReference: {fileID: 1164517722153106, guid: e627c9d62ad090d4681c97b91a2aa962,
+        type: 2}
+    - target: {fileID: 114942860361726566, guid: 60f7f31a816c9664992d482f791bd390,
+        type: 2}
+      propertyPath: rm
+      value: 
+      objectReference: {fileID: 194115053}
+    m_RemovedComponents:
+    - {fileID: 114234637756255160, guid: 60f7f31a816c9664992d482f791bd390, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 60f7f31a816c9664992d482f791bd390, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1553651997
@@ -493,3 +488,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 49.291004, y: 29.509, z: 127.47001}
+--- !u!21 &1623499403
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Sprites/Default
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - PixelSnap: 0
+    - _EnableExternalAlpha: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
