@@ -1,52 +1,29 @@
 fileFormatVersion: 2
-guid: 0fdfc46453179774cb6b98493f0c3751
+guid: 266b69912101d5844bea692978d198ab
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Platte_hinten
-    100002: Platte_Links
-    100004: Platte_Mitte_01
-    100006: Platte_Mitte_02
-    100008: Platte_Oben
-    100010: Platte_Rechts
-    100012: Platte_unten
-    100014: //RootNode
-    400000: Platte_hinten
-    400002: Platte_Links
-    400004: Platte_Mitte_01
-    400006: Platte_Mitte_02
-    400008: Platte_Oben
-    400010: Platte_Rechts
-    400012: Platte_unten
-    400014: //RootNode
-    2100000: unnamed
-    2100002: Material
-    2100004: Material_001
-    2100006: Material_002
-    2100008: Material_003
-    2300000: Platte_hinten
-    2300002: Platte_Links
-    2300004: Platte_Mitte_01
-    2300006: Platte_Mitte_02
-    2300008: Platte_Oben
-    2300010: Platte_Rechts
-    2300012: Platte_unten
-    3300000: Platte_hinten
-    3300002: Platte_Links
-    3300004: Platte_Mitte_01
-    3300006: Platte_Mitte_02
-    3300008: Platte_Oben
-    3300010: Platte_Rechts
-    3300012: Platte_unten
-    4300000: Platte_Rechts
-    4300002: Platte_hinten
-    4300004: Platte_unten
-    4300006: Platte_Links
-    4300008: Platte_Mitte_01
-    4300010: Platte_Oben
-    4300012: Platte_Mitte_02
-    7400000: Default Take
-    9500000: //RootNode
+    100000: bottom
+    100002: Icosphere
+    100004: //RootNode
+    100006: top
+    400000: bottom
+    400002: Icosphere
+    400004: //RootNode
+    400006: top
+    2100000: No Name
+    2100002: Material.005
+    2100004: Material.008
+    2300000: bottom
+    2300002: Icosphere
+    2300004: top
+    3300000: bottom
+    3300002: Icosphere
+    3300004: top
+    4300000: Icosphere
+    4300002: top
+    4300004: bottom
+    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -122,7 +99,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
