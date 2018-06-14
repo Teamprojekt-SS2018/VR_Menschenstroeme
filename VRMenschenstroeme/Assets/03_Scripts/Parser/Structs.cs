@@ -83,7 +83,7 @@ public class Structs {
             return vec3;
         } 
     }
-
+    [System.Serializable]
     public struct PersonPosition
     {
         public bool activated;

@@ -86,7 +86,7 @@ public class VRControllerInput : MonoBehaviour {
 
     private void ApplicationMenuPressedEventHandler() {
         int nextScene = (SceneManager.GetActiveScene().buildIndex * -1) + 1;
-        SceneManager.LoadSceneAsync(nextScene);
+        SceneManager.LoadScene(nextScene);
     }
 
     private void GripPressedEventHandler() {

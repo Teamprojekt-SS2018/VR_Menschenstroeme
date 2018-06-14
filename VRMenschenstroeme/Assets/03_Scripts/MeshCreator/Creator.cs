@@ -32,7 +32,7 @@ public class Creator : MonoBehaviour
         }
         else
         {
-            this.createFence();
+            //this.createFence();
         }
     }
 
