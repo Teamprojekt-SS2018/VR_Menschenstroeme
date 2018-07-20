@@ -87,7 +87,7 @@ public class LoadPrefabsInResources : MonoBehaviour {
             newObject.transform.SetParent(shelfObject.transform);
             newObject.AddComponent<VRInteractableObject>();
             newObject.tag = "SimulationObject";
-
+            newObject.layer = 8;
             newObject.transform.localScale = new Vector3(scale, scale, scale);
             return newObject;
         }
