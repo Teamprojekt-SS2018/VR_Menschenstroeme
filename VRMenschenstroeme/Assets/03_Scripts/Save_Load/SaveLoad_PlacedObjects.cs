@@ -13,9 +13,10 @@ public class SaveData {
     public Vector3 Position;
     public Vector3 Scale;
     public Quaternion Rotation;
+    public int Layer;
 
     public override string ToString() {
-        return PrefabName + "_" + Id + "_Position: (" + Position.x + ", " + Position.y + ", " + Position.z + ")" + "_Scale: (" + Scale.x + ", " + Scale.y + ", " + Scale.z + ")";
+        return PrefabName + "_" + Id + "_Position: (" + Position.x + ", " + Position.y + ", " + Position.z + ")" + "_Scale: (" + Scale.x + ", " + Scale.y + ", " + Scale.z + ")" + "Layer: " + Layer;
     }
 }
 
@@ -83,6 +84,8 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
             saveDataInstance[i].Scale = objectsOnTable[i].transform.localScale;
             saveDataInstance[i].Position = objectsOnTable[i].transform.localPosition;
             saveDataInstance[i].Rotation = objectsOnTable[i].transform.localRotation;
+            saveDataInstance[i].Rotation = objectsOnTable[i].transform.localRotation;
+            saveDataInstance[i].Layer = objectsOnTable[i].layer;
         }
 
         //Convert to Jason
@@ -102,8 +105,8 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
 
 
         if (jsonString.Length > 1) {
-            SaveData[] player = JsonHelper.FromJson<SaveData>(jsonString);
-            foreach (SaveData item in player) {
+            SaveData[] loadedSaveData = JsonHelper.FromJson<SaveData>(jsonString);
+            foreach (SaveData item in loadedSaveData) {
 
                 GameObject prefab = prefabs.First(x => x.name == item.PrefabName);
 
@@ -117,6 +120,7 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
                 newObject.AddComponent<VRInteractableObject>();
                 newObject.GetComponent<VRInteractableObject>().clonedObject = true;
                 newObject.tag = "SimulationObject";
+                newObject.layer = item.Layer;
 
                 newObject.transform.localScale = item.Scale;
                 newObject.transform.localRotation = item.Rotation;
