@@ -4,16 +4,18 @@ public class VRInteractableObject : MonoBehaviour {
 
     protected Rigidbody rigidBody;
     protected bool originalKinematicState;
+    protected RigidbodyConstraints originalConstraintsState;
     protected Transform originalParent;
     private int index;
     public bool clonedObject = false;
 
     private void Awake() {
         rigidBody = GetComponent<Rigidbody>();
-        rigidBody.constraints = RigidbodyConstraints.FreezeAll;
-        //Capture object's original parent and kinematic state
-        originalParent = transform.parent;
+        originalConstraintsState = rigidBody.constraints;
         originalKinematicState = rigidBody.isKinematic;
+        originalParent = transform.parent;
+
+        rigidBody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     public VRInteractableObject Pickup(VRControllerInput controller) {
@@ -30,9 +32,11 @@ public class VRInteractableObject : MonoBehaviour {
         newInteractableObject.transform.localScale = gameObject.transform.lossyScale;
         newObject.gameObject.name = this.name + "_" + index++;
         newInteractableObject.GetComponent<Rigidbody>().isKinematic = true;
+        newInteractableObject.GetComponent<Rigidbody>().useGravity = true;
+        newInteractableObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         newInteractableObject.originalParent = originalParent;
         newInteractableObject.originalKinematicState = originalKinematicState;
-        newInteractableObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        newInteractableObject.originalConstraintsState= originalConstraintsState;
         newInteractableObject.transform.SetParent(controller.gameObject.transform);
         newInteractableObject.clonedObject = true;
         return newInteractableObject;
@@ -57,7 +61,7 @@ public class VRInteractableObject : MonoBehaviour {
 
             //Return previous kinematic state
             rigidBody.isKinematic = originalKinematicState;
-
+            rigidBody.constraints = originalConstraintsState;
             //Set object's parent to its original parent
             if (originalParent != controller.gameObject.transform) {
                 //Ensure original parent recorded wasn't somehow the controller (failsafe)
