@@ -77,13 +77,14 @@ public class LoadPrefabsInResources : MonoBehaviour {
 
             if (newObject.GetComponent<Rigidbody>() == null) {
                 newObject.AddComponent<Rigidbody>();
+                newObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             }
             if (newObject.GetComponent<MeshCollider>() == null) {
                 newObject.AddComponent<MeshCollider>();
             }
+
             newObject.GetComponent<MeshCollider>().convex = true;
             newObject.GetComponent<Rigidbody>().isKinematic = false;
-            newObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             newObject.transform.SetParent(shelfObject.transform);
             newObject.AddComponent<VRInteractableObject>();
             newObject.tag = "SimulationObject";
