@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Room_Table_Shelf.unity
     guid: a1a1619e280bee84fa6a7bbe4a0decce
-  - enabled: 1
-    path: Assets/Simulation.unity
-    guid: 1521d0264c0922e4798b409dc6557891
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

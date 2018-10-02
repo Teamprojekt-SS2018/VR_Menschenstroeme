@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 
@@ -13,6 +14,9 @@ public class SaveData {
     public Vector3 Position;
     public Vector3 Scale;
     public Quaternion Rotation;
+    public bool freezX;
+    public bool freezY;
+    public bool freezZ;
     public int Layer;
 
     public override string ToString() {
@@ -49,7 +53,7 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
     // Declare and initialize a new List of GameObjects called currentCollisions.
     List<GameObject> objectsOnTable = new List<GameObject>();
     public string SaveGameName = "SimulationSave";
-    public GameObject Map;
+    private GameObject Map;
     private string SavePath = "";
     private GameObject[] prefabs;
 
@@ -57,21 +61,28 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
     void Start() {
         prefabs = Resources.LoadAll<GameObject>("0_SimulationObjects\\");
         SavePath = Application.dataPath + "/05_SaveData/";
+        Map = ManagerData.Instance.map;
     }
 
     void OnCollisionEnter(Collision col) {
         // Add the GameObject collided with to the list.
         objectsOnTable.Add(col.gameObject);
+        objectsOnTable.RemoveAll(item => item == null);
+
+        col.gameObject.transform.parent = Map.transform;
     }
 
     void OnCollisionExit(Collision col) {
         // Remove the GameObject collided with from the list.
         objectsOnTable.Remove(col.gameObject);
+        objectsOnTable.RemoveAll(item => item == null);
+
+        col.gameObject.transform.parent = col.gameObject.GetComponent<VRInteractableObject>().originalParent;
     }
 
     public void save() {
-        Debug.Log(SavePath);
-
+        Debug.Log("Save Data to: \n" + SavePath);
+        objectsOnTable.RemoveAll(item => item == null);
 
         SaveData[] saveDataInstance = new SaveData[objectsOnTable.Count];
 
@@ -79,13 +90,59 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
             objectsOnTable[i].transform.SetParent(Map.transform);
             string _name = objectsOnTable[i].name;
             saveDataInstance[i] = new SaveData();
-            saveDataInstance[i].PrefabName = _name.Substring(0, _name.IndexOf("(Clone)"));
-            saveDataInstance[i].Id = _name.Substring(_name.IndexOf("(Clone)_") + 8);
+            if (_name != "HumanScale") {
+                saveDataInstance[i].PrefabName = _name.Substring(0, _name.IndexOf("(Clone)"));
+            } else {
+                saveDataInstance[i].PrefabName = _name;
+            }
+            Regex reg = new Regex("[ ()]");
+            string temp = _name.Substring(_name.IndexOf("(Clone)_") + 8).Trim();
+
+            saveDataInstance[i].Id = 999 + reg.Replace(temp, string.Empty).Replace("999","");
             saveDataInstance[i].Scale = objectsOnTable[i].transform.localScale;
             saveDataInstance[i].Position = objectsOnTable[i].transform.localPosition;
             saveDataInstance[i].Rotation = objectsOnTable[i].transform.localRotation;
             saveDataInstance[i].Rotation = objectsOnTable[i].transform.localRotation;
             saveDataInstance[i].Layer = objectsOnTable[i].layer;
+            if (objectsOnTable[i].GetComponent<Rigidbody>().constraints == RigidbodyConstraints.FreezeRotationX) {
+                saveDataInstance[i].freezX = true;
+                saveDataInstance[i].freezY = false;
+                saveDataInstance[i].freezZ = false;
+            } else
+            if (objectsOnTable[i].GetComponent<Rigidbody>().constraints == RigidbodyConstraints.FreezeRotationY) {
+                saveDataInstance[i].freezX = false;
+                saveDataInstance[i].freezY = true;
+                saveDataInstance[i].freezZ = false;
+            } else
+            if (objectsOnTable[i].GetComponent<Rigidbody>().constraints == RigidbodyConstraints.FreezeRotationZ) {
+                saveDataInstance[i].freezX = false;
+                saveDataInstance[i].freezY = false;
+                saveDataInstance[i].freezZ = true;
+            } else
+            if (objectsOnTable[i].GetComponent<Rigidbody>().constraints == (RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY)) {
+                saveDataInstance[i].freezX = true;
+                saveDataInstance[i].freezY = true;
+                saveDataInstance[i].freezZ = false;
+            } else
+            if (objectsOnTable[i].GetComponent<Rigidbody>().constraints == (RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ)) {
+                saveDataInstance[i].freezX = true;
+                saveDataInstance[i].freezY = false;
+                saveDataInstance[i].freezZ = true;
+            } else
+            if (objectsOnTable[i].GetComponent<Rigidbody>().constraints == (RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ)) {
+                saveDataInstance[i].freezX = false;
+                saveDataInstance[i].freezY = true;
+                saveDataInstance[i].freezZ = true;
+            } else
+            if (objectsOnTable[i].GetComponent<Rigidbody>().constraints == RigidbodyConstraints.FreezeRotation) {
+                saveDataInstance[i].freezX = true;
+                saveDataInstance[i].freezY = true;
+                saveDataInstance[i].freezZ = true;
+            } else {
+                saveDataInstance[i].freezX = false;
+                saveDataInstance[i].freezY = false;
+                saveDataInstance[i].freezZ = false;
+            }
         }
 
         //Convert to Jason
@@ -101,8 +158,7 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
         for (int i = 0; i < objectsOnTable.Count; i++) {
             Destroy(objectsOnTable[i]);
         }
-        objectsOnTable = new List<GameObject>();
-
+        objectsOnTable.Clear();
 
         if (jsonString.Length > 1) {
             SaveData[] loadedSaveData = JsonHelper.FromJson<SaveData>(jsonString);
@@ -113,6 +169,7 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
                 GameObject newObject = Instantiate(prefab, item.Position, item.Rotation);
 
                 newObject.AddComponent<Rigidbody>();
+
                 newObject.AddComponent<MeshCollider>();
                 newObject.GetComponent<MeshCollider>().convex = true;
                 newObject.GetComponent<Rigidbody>().isKinematic = false;
@@ -122,11 +179,33 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
                 newObject.tag = "SimulationObject";
                 newObject.layer = item.Layer;
 
+
+                RigidbodyConstraints temp = RigidbodyConstraints.None;
+
+                if (item.freezX && item.freezY && item.freezZ) {
+                    newObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+                } else {
+                    if (item.freezX) {
+                        temp = temp | RigidbodyConstraints.FreezeRotationX;
+                    }
+                    if (item.freezY) {
+                        temp = temp | RigidbodyConstraints.FreezeRotationY;
+                    }
+                    if (item.freezZ) {
+                        temp = temp | RigidbodyConstraints.FreezeRotationZ;
+                    }
+                    newObject.GetComponent<Rigidbody>().constraints = temp;
+                }
+
+
                 newObject.transform.localScale = item.Scale;
                 newObject.transform.localRotation = item.Rotation;
                 newObject.transform.localPosition = item.Position;
-                newObject.name = item.PrefabName + "(Clone)_" + item.Id;
-                objectsOnTable.Add(newObject);
+                if (item.PrefabName != "HumanScale") {
+                    newObject.name = item.PrefabName + "(Clone)_" + item.Id;
+                } else {
+                    newObject.name = item.PrefabName;
+                }
             }
         }
     }

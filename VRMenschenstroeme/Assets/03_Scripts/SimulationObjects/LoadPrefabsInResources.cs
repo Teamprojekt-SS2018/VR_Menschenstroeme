@@ -63,16 +63,6 @@ public class LoadPrefabsInResources : MonoBehaviour {
     private GameObject CreateSimulationGameObject(GameObject shelfObject, GameObject prefab) {
         MeshFilter shelfObject_mf = shelfObject.GetComponent<MeshFilter>();
         if (shelfObject_mf != null) {
-            Bounds bounds = shelfObject_mf.mesh.bounds;
-
-            float max = bounds.extents.x;
-            if (max < bounds.extents.y)
-                max = bounds.extents.y;
-            if (max < bounds.extents.z)
-                max = bounds.extents.z;
-
-            float scale = (emptySize * 0.5f) / max;
-
             GameObject newObject = Instantiate(prefab, shelfObject.transform.position, prefab.transform.rotation);
 
             if (newObject.GetComponent<Rigidbody>() == null) {
@@ -89,9 +79,35 @@ public class LoadPrefabsInResources : MonoBehaviour {
             newObject.AddComponent<VRInteractableObject>();
             newObject.tag = "SimulationObject";
             newObject.layer = 8;
+
+            float scale = shelfObject_mf.mesh.bounds.extents.x / req(newObject.transform);
             newObject.transform.localScale = new Vector3(scale, scale, scale);
+
+
             return newObject;
         }
         return new GameObject();
+    }
+
+
+    private float req(Transform newObjectTransform) {
+        float max = 0f;
+        if (newObjectTransform.gameObject.GetComponent<MeshFilter>() != null) {
+            Bounds bounds = newObjectTransform.gameObject.GetComponent<MeshFilter>().mesh.bounds;
+            max = bounds.extents.x;
+            if (max < bounds.extents.y)
+                max = bounds.extents.y;
+            if (max < bounds.extents.z)
+                max = bounds.extents.z;
+        }
+
+        int children = newObjectTransform.childCount;
+        for (int i = 0; i < children; ++i) {
+
+        float temp = req(newObjectTransform.GetChild(i));
+            max = max > temp ? max : temp;
+        }
+
+        return max;
     }
 }

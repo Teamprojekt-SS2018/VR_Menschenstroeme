@@ -5,7 +5,7 @@ public class VRInteractableObject : MonoBehaviour {
     protected Rigidbody rigidBody;
     protected bool originalKinematicState;
     protected RigidbodyConstraints originalConstraintsState;
-    protected Transform originalParent;
+    public Transform originalParent;
     private int index;
     public bool clonedObject = false;
 
@@ -30,7 +30,11 @@ public class VRInteractableObject : MonoBehaviour {
         GameObject newObject = Instantiate(this.gameObject, this.transform.position, this.transform.rotation);
         VRInteractableObject newInteractableObject = newObject.GetComponent(typeof(VRInteractableObject)) as VRInteractableObject;
         newInteractableObject.transform.localScale = gameObject.transform.lossyScale;
-        newObject.gameObject.name = this.name + "_" + index++;
+        if (this.name != "HumanScale") {
+            newObject.gameObject.name = this.name + "_" + index++;
+        } else {
+            newObject.gameObject.name = this.name;
+        }
         newInteractableObject.GetComponent<Rigidbody>().isKinematic = true;
         newInteractableObject.GetComponent<Rigidbody>().useGravity = true;
         newInteractableObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;

@@ -1,15 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System;
 
 
 public partial class ReadConfig : MonoBehaviour {
 
     /* Config Variablen */
     private string triangulation;                 // XXX.am_fmt
-    private string config = "ConfigMuenster.dat"; // Config.Dat
+    private string config; // Config.Dat
 
     /* Aus Config.Dat*/
     private int EntranceCount;
@@ -42,8 +43,20 @@ public partial class ReadConfig : MonoBehaviour {
      * ReadConfig muss vor ReadTrianulation laufen, da die xxx.am_fmt in der Config.dat definiert ist.
      */
     void Awake () {
+        config = ManagerData.Instance.configData;
+
         ReadConfigDat();
-        ReadTriangulation();
+        if (triangulation.Contains("am_fmt"))
+        {
+            ReadTriangulation_fmt();
+        }
+        else if  (triangulation.Contains("msh"))
+        {
+            ReadTriangulation_msh();
+        }
+
+        
+        ManagerData.Instance.ReadConfig = this;
     }
 
     List<Structs.Entrance> getEntrances()
@@ -104,18 +117,18 @@ public partial class ReadConfig : MonoBehaviour {
                 if (line.Contains("Gebietsdaten"))
                 {
                     triangulation = Helper.SplitWhitespace(configData[i + 1])[0];
-                    globalRefinement = float.Parse(Helper.SplitWhitespace(configData[i + 2])[0]);
-                    localRefinement = float.Parse(Helper.SplitWhitespace(configData[i + 3])[0]);
+                    globalRefinement = Single.Parse(Helper.SplitWhitespace(configData[i + 2])[0].Replace('.', ','));
+                    localRefinement = Single.Parse(Helper.SplitWhitespace(configData[i + 3])[0].Replace('.', ','));
                     localRefinementMode = int.Parse(Helper.SplitWhitespace(configData[i + 4])[0]);
                     i = i + 4;
                 }
                 else if (line.Contains("Charakteristische Laengen"))
                 {
 
-                    length = float.Parse(Helper.SplitWhitespace(configData[i + 1])[0]);
-                    time = float.Parse(Helper.SplitWhitespace(configData[i + 2])[0]);
-                    dencity = float.Parse(Helper.SplitWhitespace(configData[i + 3])[0]);
-                    velocity = float.Parse(Helper.SplitWhitespace(configData[i + 4])[0]);
+                    length = Single.Parse(Helper.SplitWhitespace(configData[i + 1])[0].Replace('.', ','));
+                    time = Single.Parse(Helper.SplitWhitespace(configData[i + 2])[0].Replace('.', ','));
+                    dencity = Single.Parse(Helper.SplitWhitespace(configData[i + 3])[0].Replace('.', ','));
+                    velocity = Single.Parse(Helper.SplitWhitespace(configData[i + 4])[0].Replace('.', ','));
                     i = i + 4;
                 }
                 else if (line.Contains("Anfangsbedingung"))
@@ -131,12 +144,12 @@ public partial class ReadConfig : MonoBehaviour {
                     {
                         string[] splitted = Helper.SplitWhitespace(configData[i + n + 1]);
 
-                        Structs.Entrance currentEntrance = new Structs.Entrance(float.Parse(splitted[0]),
-                        float.Parse(splitted[1]),
-                        float.Parse(splitted[2]),
-                        float.Parse(splitted[3]),
-                        float.Parse(splitted[4]),
-                        float.Parse(splitted[5]));
+                        Structs.Entrance currentEntrance = new Structs.Entrance(Single.Parse(splitted[0].Replace('.', ',')) * length,
+                        Single.Parse(splitted[1].Replace('.', ',')) * length,
+                        Single.Parse(splitted[2].Replace('.', ',')) * length,
+                        Single.Parse(splitted[3].Replace('.', ',')) * length,
+                        Single.Parse(splitted[4].Replace('.', ',')),
+                        Single.Parse(splitted[5].Replace('.', ',')));
                         entrances.Add(currentEntrance);
                     }
                     i = i + EntranceCount;
@@ -147,10 +160,10 @@ public partial class ReadConfig : MonoBehaviour {
                     for (int n = 1; n <= exitCount; n++)
                     {
                         string[] splitted = Helper.SplitWhitespace(configData[i + n + 1]);
-                        Structs.Exit currentExit = new Structs.Exit(float.Parse(splitted[0]),
-                        float.Parse(splitted[1]),
-                        float.Parse(splitted[2]),
-                        float.Parse(splitted[3]));
+                        Structs.Exit currentExit = new Structs.Exit(Single.Parse(splitted[0].Replace('.', ',')) * length,
+                        Single.Parse(splitted[1].Replace('.', ',')) * length,
+                        Single.Parse(splitted[2].Replace('.', ',')) * length,
+                        Single.Parse(splitted[3].Replace('.', ',')) * length);
                         exits.Add(currentExit);
                     }
                     i = i + exitCount;
@@ -161,10 +174,10 @@ public partial class ReadConfig : MonoBehaviour {
                     for (int n = 1; n <= stationCount; n++)
                     {
                         string[] splitted = Helper.SplitWhitespace(configData[i + n + 1]);
-                        Vector4 currentStation = new Vector4(float.Parse(splitted[0]),
-                        float.Parse(splitted[1]),
-                        float.Parse(splitted[2]),
-                        float.Parse(splitted[3].Split('\t')[0]));
+                        Vector4 currentStation = new Vector4(Single.Parse(splitted[0].Replace('.', ',')) * length,
+                        Single.Parse(splitted[1].Replace('.', ',')) * length,
+                        Single.Parse(splitted[2].Replace('.', ',')) * length,
+                        Single.Parse(splitted[3].Split('\t')[0].Replace('.', ',')));
                         stations.Add(currentStation);
                     }
                     i = i + stationCount;
@@ -177,7 +190,10 @@ public partial class ReadConfig : MonoBehaviour {
         }
     }
 
-    void ReadTriangulation()
+    
+
+
+    void ReadTriangulation_fmt()
     {
         string[] configData = File.ReadAllLines(triangulation);
         pointCount = int.Parse(Helper.SplitWhitespace(configData[0])[1]);
@@ -190,8 +206,8 @@ public partial class ReadConfig : MonoBehaviour {
         for (int i = tmp; i <= tmp + (pointCount / 2) - 1; i++)
         {
             string[] splitted = Helper.SplitWhitespace(configData[i]);
-            points[a] = new Structs.Point(float.Parse(splitted[1]), float.Parse(splitted[2]));
-            points[a+1] = new Structs.Point(float.Parse(splitted[3]), float.Parse(splitted[4]));
+            points[a] = new Structs.Point(Single.Parse(splitted[1].Replace('.', ',')), Single.Parse(splitted[2].Replace('.', ',')));
+            points[a+1] = new Structs.Point(Single.Parse(splitted[3].Replace('.', ',')), Single.Parse(splitted[4].Replace('.', ',')));
             a = a + 2;
         }
         a = 0;
@@ -205,6 +221,60 @@ public partial class ReadConfig : MonoBehaviour {
             vertices[a+4] = int.Parse(splitted[5]) - 1;
             vertices[a+5] = int.Parse(splitted[6]) - 1;
             a = a + 6;
+        }
+    }
+
+    void ReadTriangulation_msh()
+    {
+        string[] configData = File.ReadAllLines(triangulation);
+        string mode = "";
+        string[] splitted;
+        int v = 0;
+        foreach (string line in configData)
+        {
+             
+            splitted = Helper.SplitWhitespace(line);
+            if (line.Contains("Nodes"))
+            {
+                mode = "nodes";
+                continue;
+            }
+            else if (line.Contains("Elements"))
+            {
+                mode = "elements";
+                continue;
+            }
+
+            if (mode == "nodes" )
+            {
+                if (splitted.Length < 3 )
+                {
+                    pointCount = int.Parse(splitted[0]);
+                    points = new Structs.Point[pointCount + 1];
+                }
+                else
+                {
+                    Structs.Point p = new Structs.Point(Single.Parse(splitted[1].Replace('.', ',')), Single.Parse(splitted[2].Replace('.', ',')));
+                    points[int.Parse(splitted[0]) - 1] = p;
+                    Debug.Log(p);
+                }
+            }
+            else if (mode == "elements")
+            {
+                if (splitted.Length < 3)
+                {
+                    vertCount = int.Parse(splitted[0]);
+                    vertices = new int[3 * (vertCount)];
+                    Debug.Log(vertCount);
+                }
+                else
+                {
+                    vertices[v] = int.Parse(splitted[5]) - 1 ;
+                    vertices[v + 1] = int.Parse(splitted[6]) - 1;
+                    vertices[v + 2] = int.Parse(splitted[7]) - 1;
+                    v = v + 3;
+                }
+            }
         }
     }
 }
