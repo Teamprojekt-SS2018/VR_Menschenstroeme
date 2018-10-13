@@ -182,6 +182,11 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
 
                 RigidbodyConstraints temp = RigidbodyConstraints.None;
 
+
+
+
+    	        newObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                /**
                 if (item.freezX && item.freezY && item.freezZ) {
                     newObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
                 } else {
@@ -195,7 +200,7 @@ public class SaveLoad_PlacedObjects : MonoBehaviour {
                         temp = temp | RigidbodyConstraints.FreezeRotationZ;
                     }
                     newObject.GetComponent<Rigidbody>().constraints = temp;
-                }
+                } */
 
 
                 newObject.transform.localScale = item.Scale;
